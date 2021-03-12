@@ -1,9 +1,24 @@
 module RAMS
+"""
+RAMS Julia Library
+
+"""
+
 using NCDatasets
 using Dates
 using ProgressMeter
+using Statistics
 
 function RAMSDates(flist::Array{String,1})
+"""
+Takes array of file paths and returns datetimes.
+
+# Arguments
+- `flist::Array{String,1}`: 1D array of string file paths 
+
+# Returns
+ - `dtarr::Array{DateTime,1}`: 1D array of datetimes
+"""
 
     dtregex = r"[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{6}"
     dtarr = DateTime[]
@@ -31,14 +46,33 @@ function RAMSDates(flist::Array{String,1})
 end
 export RAMSDates
 
-function RAMSVar(flist::Array{String,1}, varname::String)
+function RAMSVar(flist::Array{String,1}, varname::String; dim_mean=nothing)
+    """
+    Function to read a variable from a list of RAMS data files.
+
+    # Arguments
+    - `flist::Array{String,1}`: 1D array of string file paths
+    - `varname::String`: Name of variable
+    - `dim_mean::Tuple`:(Optional) Dimenions to take mean over
+
+    # Returns
+    - `var::Array`: Output variable
+    """
     @showprogress for (i,f) in enumerate(flist)
         ds = Dataset(f)
         if i == 1 
             global nd = ndims(ds[varname]) 
-            global var = ds[varname][:]
+            if dim_mean == nothing
+                global var = ds[varname][:]
+            else
+                global var = dropdims(mean(ds[varname][:], dims=dim_mean); dims=dim_mean)
+            end
         else
-            var = cat(var, ds[varname][:], dims=(nd+1))
+            if dim_mean == nothing
+                var = cat(var, ds[varname][:], dims=(nd+1))
+            else
+                var = cat(var, dropdims(mean(ds[varname][:], dims=dim_mean); dims=dim_mean), dims=(nd+1))
+            end
         end
     end
     return var
