@@ -68,7 +68,7 @@ function RAMSVar(flist::Array{String,1}, varname::String; dim_mean=nothing)
                 global var = dropdims(mean(ds[varname][:], dims=dim_mean); dims=dim_mean)
             end
         else
-            if dim_mean == nothing
+            if dim_mean === nothing
                 var = cat(var, ds[varname][:], dims=(nd+1))
             else
                 var = cat(var, dropdims(mean(ds[varname][:], dims=dim_mean); dims=dim_mean), dims=(nd+1))
