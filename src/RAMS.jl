@@ -9,7 +9,6 @@ using Dates
 using ProgressMeter
 using Statistics
 
-function RAMSDates(flist::Array{String,1})
 """
 Takes array of file paths and returns datetimes.
 
@@ -19,6 +18,7 @@ Takes array of file paths and returns datetimes.
 # Returns
  - `dtarr::Array{DateTime,1}`: 1D array of datetimes
 """
+function RAMSDates(flist::Array{String,1})
 
     dtregex = r"[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{6}"
     dtarr = DateTime[]
@@ -46,18 +46,18 @@ Takes array of file paths and returns datetimes.
 end
 export RAMSDates
 
+"""
+Function to read a variable from a list of RAMS data files.
+
+# Arguments
+- `flist::Array{String,1}`: 1D array of string file paths
+- `varname::String`: Name of variable
+- `dim_mean::Tuple`:(Optional) Dimenions to take mean over
+
+# Returns
+- `var::Array`: Output variable
+"""
 function RAMSVar(flist::Array{String,1}, varname::String; dim_mean=nothing)
-    """
-    Function to read a variable from a list of RAMS data files.
-
-    # Arguments
-    - `flist::Array{String,1}`: 1D array of string file paths
-    - `varname::String`: Name of variable
-    - `dim_mean::Tuple`:(Optional) Dimenions to take mean over
-
-    # Returns
-    - `var::Array`: Output variable
-    """
     @showprogress for (i,f) in enumerate(flist)
         ds = Dataset(f)
         if i == 1 
