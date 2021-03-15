@@ -68,7 +68,7 @@ function RAMSVar(flist::Array{String,1}, varname::String)
     var = zeros(t, dims...)
 
     @showprogress for (i,f) in enumerate(flist[2:end])
-        selectdim(var,1,1) .= h5read(f, varname)
+        selectdim(var,1,i) .= h5read(f, varname)
     end
     return var
 end
