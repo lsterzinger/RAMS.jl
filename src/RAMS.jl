@@ -4,13 +4,14 @@ RAMS Julia Library
 
 """
 
-using NCDatasets
+using HDF5
 using Dates
 using ProgressMeter
 using Statistics
 
-function RAMSDates(flist::Array{String,1})
 """
+    RAMSDates(flist)
+
 Takes array of file paths and returns datetimes.
 
 # Arguments
@@ -19,6 +20,7 @@ Takes array of file paths and returns datetimes.
 # Returns
  - `dtarr::Array{DateTime,1}`: 1D array of datetimes
 """
+function RAMSDates(flist::Array{String,1})
 
     dtregex = r"[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{6}"
     dtarr = DateTime[]
@@ -46,34 +48,27 @@ Takes array of file paths and returns datetimes.
 end
 export RAMSDates
 
-function RAMSVar(flist::Array{String,1}, varname::String; dim_mean=nothing)
-    """
-    Function to read a variable from a list of RAMS data files.
+"""
+    RAMSVar(flist, varname)
 
-    # Arguments
-    - `flist::Array{String,1}`: 1D array of string file paths
-    - `varname::String`: Name of variable
-    - `dim_mean::Tuple`:(Optional) Dimenions to take mean over
+Function to read a variable from a list of RAMS data files.
 
-    # Returns
-    - `var::Array`: Output variable
-    """
-    @showprogress for (i,f) in enumerate(flist)
-        ds = Dataset(f)
-        if i == 1 
-            global nd = ndims(ds[varname]) 
-            if dim_mean == nothing
-                global var = ds[varname][:]
-            else
-                global var = dropdims(mean(ds[varname][:], dims=dim_mean); dims=dim_mean)
-            end
-        else
-            if dim_mean == nothing
-                var = cat(var, ds[varname][:], dims=(nd+1))
-            else
-                var = cat(var, dropdims(mean(ds[varname][:], dims=dim_mean); dims=dim_mean), dims=(nd+1))
-            end
-        end
+# Arguments
+- `flist::Array{String,1}`: 1D array of string file paths
+- `varname::String`: Name of variable
+
+# Returns
+- `var::Array`: Output variable
+"""
+function RAMSVar(flist::Array{String,1}, varname::String)
+    temp = h5read(flist[1], varname)
+    nt = length(flist)
+    dims = vcat(nt, [i for i in size(temp)])
+    t = typeof(temp[1])
+    var = zeros(t, dims...)
+
+    @showprogress for (i,f) in enumerate(flist[2:end])
+        selectdim(var,1,1) .= h5read(f, varname)
     end
     return var
 end
