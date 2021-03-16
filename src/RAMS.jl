@@ -90,3 +90,61 @@ end
 export dropmean
 
 end # module
+
+
+"""
+    vert_int_4d(array, ztn)
+Vertically integrates a 4D array with dimensions `[time, x, y, z]`
+
+#Returns:
+- `var::Array`: Vertically integrated quantity with dimensions `[time, x, y]`
+"""
+function vert_int_4d(array, ztn)
+    (nt, nx, ny, nz) = size(array)
+    
+    dims = (nt, nx, ny)
+    
+    t = typeof(array[1])
+    var = zeros(t, dims)
+    
+    @showprogress for t in 1:nt
+        for x in 1:nx
+            for y in 1:ny
+                s = 0.0
+                for z in 2:nz
+                    s  += ((array[t,x,y,z] + array[t,x,y,z-1]) / 2) * (ztn[z] - ztn[z-1])
+                end
+                var[t,x,y] = s
+            end
+        end
+    end
+    return array
+end
+export vert_int_4d
+
+
+"""
+    vert_int_2d(array, ztn)
+Vertically integrates a 4D array with dimensions `[time, z]`
+
+#Returns:
+- `var::Array`: Vertically integrated quantity with dimensions `[time]``
+"""
+function vert_int_2d(array, ztn)
+    (nt, nz) = size(array)
+    
+    dims = (nt,)
+
+    t = typeof(array[1])
+    var = zeros(t, dims)
+    
+    @showprogress for t in 1:nt
+        s = 0.0
+        for z in 2:nz
+            s  += ((array[t,x,y,z] + array[t,x,y,z-1]) / 2) * (ztn[z] - ztn[z-1])
+        end
+        var[t] = s
+    end
+    return array
+end
+export vert_int_2d
