@@ -60,7 +60,7 @@ Function to read a variable from a list of RAMS data files.
 # Returns
 - `var::Array`: Output variable
 """
-function RAMSVar(flist::Array{String,1}, varname::String)
+function RAMSVar(flist::Array{String,1}, varname::String; meandims=nothing)
     temp = h5read(flist[1], varname)
     nt = length(flist)
     dims = vcat(nt, [i for i in size(temp)])
@@ -70,8 +70,23 @@ function RAMSVar(flist::Array{String,1}, varname::String)
     @showprogress for (i,f) in enumerate(flist[1:end])
         selectdim(var,1,i) .= h5read(f, varname)
     end
-    return var
+    if meandims === nothing
+        return var
+    else
+        return dropmean(var, meandims)
+    end
 end
 export RAMSVar
+
+
+"""
+    dropmean(var, meandrop)
+Function to drop dimensions used while taking a mean. 
+Specify `meandrop` as a tuple of dimensions (e.g. `meandrop=(1,2)`)
+"""
+function dropmean(var, meandrop)
+    return dropdims(mean(var, dims=meandrop), dims=meandrop)
+end
+export dropmean
 
 end # module
