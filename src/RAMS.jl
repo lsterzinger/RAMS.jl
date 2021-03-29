@@ -137,10 +137,11 @@ export vert_int_4d
 
 """
     list_files(dir::String)
-List all RAMS data files (`*.h5`) in `dir`.
+List all RAMS data files (`*.h5`) in `dir`. 
+Effectively, this removes the `*.txt` header files from the built-in `readdir()` results.
 """
 function list_files(dir::String)
-    flist = readdir(dir)
+    flist = readdir(dir, join=true)
 	outlist = String[]
     for f in flist
     	m = match(r"^.*\.h5$", f)
