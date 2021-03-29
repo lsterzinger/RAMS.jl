@@ -136,10 +136,10 @@ export vert_int_4d
 
 
 """
-    list_files(dir)
+    list_files(dir::String)
 List all RAMS data files (`*.h5`) in `dir`.
 """
-function list_files(dir)
+function list_files(dir::String)
     flist = readdir(dir)
 	outlist = String[]
     for f in flist
