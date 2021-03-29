@@ -133,4 +133,22 @@ function vert_int_4d(var, ztn; notime=false)
     end
 end
 export vert_int_4d
+
+
+"""
+    list_files(dir)
+List all RAMS data files (`*.h5`) in `dir`.
+"""
+function list_files(dir)
+    flist = readdir(dir)
+	outlist = String[]
+    for f in flist
+    	m = match(r"^.*\.h5$", f)
+        if !isnothing(m)
+        	push!(outlist, m.match)
+		end
+	end
+    return outlist
+end
+export list_files
 end # module
