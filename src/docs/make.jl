@@ -7,3 +7,7 @@ makedocs(
         "API Reference" => "apiref.md"
     ]
 )
+
+deploydocs(
+    repo="github.com/lsterzinger/RAMS.jl.git"
+)
