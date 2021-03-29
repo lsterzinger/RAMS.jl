@@ -9,5 +9,6 @@ makedocs(
 )
 
 deploydocs(
-    repo="github.com/lsterzinger/RAMS.jl.git"
+    repo="github.com/lsterzinger/RAMS.jl.git",
+    devbranch = "main"
 )
