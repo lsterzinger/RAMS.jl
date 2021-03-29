@@ -89,62 +89,48 @@ function dropmean(var, meandrop)
 end
 export dropmean
 
-end # module
-
 
 """
-    vert_int_4d(array, ztn)
-Vertically integrates a 4D array with dimensions `[time, x, y, z]`
+    vert_int_4d(var, ztn; notime=false)
+Vertically integrate `var` along `z` axis with heights specified in `ztn`. 
+Assumes that `var` has dimensions `[t, x, y, z]`
 
-#Returns:
-- `var::Array`: Vertically integrated quantity with dimensions `[time, x, y]`
+Specify `notime=true` to allow for `var`s with no `t` dimension (will also be 
+omitted from `int_var`)
+
+# Returns:
+- `int_var::Array`: Integrated array with dimensions `[t,x,y]`
 """
-function vert_int_4d(array, ztn)
-    (nt, nx, ny, nz) = size(array)
-    
-    dims = (nt, nx, ny)
-    
-    t = typeof(array[1])
-    var = zeros(t, dims)
-    
-    @showprogress for t in 1:nt
-        for x in 1:nx
-            for y in 1:ny
+function vert_int_4d(var, ztn; notime=false)
+    if notime == false
+        (nt, nx, ny, nz) = size(var)
+        int_var = zeros(typeof(var[1]), (nt, nx, ny))
+
+        @showprogress for t=1:nt
+            for x=1:nx, y=1:ny
                 s = 0.0
                 for z in 2:nz
-                    s  += ((array[t,x,y,z] + array[t,x,y,z-1]) / 2) * (ztn[z] - ztn[z-1])
+                    s += ((var[t,x,y,z] + var[t,x,y,z-1])/2) * (ztn[z] - ztn[z-1])
                 end
-                var[t,x,y] = s
+                int_var[t,x,y] = s
+        
             end
         end
+        return int_var
+    else
+        (nx, ny, nz) = size(var)
+        int_var = zeros(typeof(var[1]), (nx, ny))
+
+        for x=1:nx, y=1:ny
+            s = 0.0
+            for z in 2:nz
+                s += ((var[x,y,z] + var[x,y,z-1])/2) * (ztn[z] - ztn[z-1])
+            end
+            int_var[x,y] = s
+    
+        end
+        return int_var
     end
-    return array
 end
 export vert_int_4d
-
-
-"""
-    vert_int_2d(array, ztn)
-Vertically integrates a 4D array with dimensions `[time, z]`
-
-#Returns:
-- `var::Array`: Vertically integrated quantity with dimensions `[time]``
-"""
-function vert_int_2d(array, ztn)
-    (nt, nz) = size(array)
-    
-    dims = (nt,)
-
-    t = typeof(array[1])
-    var = zeros(t, dims)
-    
-    @showprogress for t in 1:nt
-        s = 0.0
-        for z in 2:nz
-            s  += ((array[t,x,y,z] + array[t,x,y,z-1]) / 2) * (ztn[z] - ztn[z-1])
-        end
-        var[t] = s
-    end
-    return array
-end
-export vert_int_2d
+end # module
