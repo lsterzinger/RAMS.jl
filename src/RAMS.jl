@@ -92,28 +92,28 @@ export dropmean
 
 
 """
-    vert_int_4d(var, ztn; notime=false)
+    vert_int(var, ztn; notime=false)
 Vertically integrate `var` along `z` axis with heights specified in `ztn`. 
-Assumes that `var` has dimensions `[t, x, y, z]`
+Assumes that `var` has dimensions `[x, y, z, t]`
 
 Specify `notime=true` to allow for `var`s with no `t` dimension (will also be 
 omitted from `int_var`)
 
 # Returns:
-- `int_var::Array`: Integrated array with dimensions `[t,x,y]`
+- `int_var::Array`: Integrated array with dimensions `[x,y,t]`
 """
-function vert_int_4d(var, ztn; notime=false)
+function vert_int(var, ztn; notime=false)
     if notime == false
-        (nt, nx, ny, nz) = size(var)
+        (nx, ny, nz, nt) = size(var)
         int_var = zeros(typeof(var[1]), (nt, nx, ny))
 
         @showprogress for t=1:nt
             for x=1:nx, y=1:ny
                 s = 0.0
                 for z in 2:nz
-                    s += ((var[t,x,y,z] + var[t,x,y,z-1])/2) * (ztn[z] - ztn[z-1])
+                    s += ((var[x,y,z,t] + var[x,y,z-1,t])/2) * (ztn[z] - ztn[z-1])
                 end
-                int_var[t,x,y] = s
+                int_var[x,y,t] = s
         
             end
         end
@@ -133,7 +133,7 @@ function vert_int_4d(var, ztn; notime=false)
         return int_var
     end
 end
-export vert_int_4d
+export vert_int
 
 
 """
