@@ -9,7 +9,8 @@ As of right now, RAMS.jl is not listed in the Julia repository. Instead, RAMS ca
 using Pkg
 Pkg.add(url="git@github.com:lsterzinger/RAMS.jl.git")
 ```
-
+## Source
+Source code can be found at [https://github.com/lsterzinger/RAMS.jl](https://github.com/lsterzinger/RAMS.jl)
 # Getting started
 
 ## Listing RAMS files
