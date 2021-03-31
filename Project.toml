@@ -1,7 +1,7 @@
 name = "RAMS"
 uuid = "ed723de6-1c0c-4ea4-9b14-8350b93dae4c"
 authors = ["Lucas Sterzinger <lsterzinger@ucdavis.edu>"]
-version = "0.2.0"
+version = "0.2.1"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
