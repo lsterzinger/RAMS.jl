@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Index · RAMS.jl</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">RAMS.jl</span></div><form class="docs-search" action="search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li class="is-active"><a class="tocitem" href>Index</a><ul class="internal"><li><a class="tocitem" href="#Installation"><span>Installation</span></a></li><li><a class="tocitem" href="#Source"><span>Source</span></a></li><li class="toplevel"><a class="tocitem" href="#Getting-started"><span>Getting started</span></a></li><li><a class="tocitem" href="#Listing-RAMS-files"><span>Listing RAMS files</span></a></li><li><a class="tocitem" href="#Converting-filenames-to-DateTime-objects"><span>Converting filenames to DateTime objects</span></a></li><li><a class="tocitem" href="#Reading-in-a-variable"><span>Reading in a variable</span></a></li><li><a class="tocitem" href="#Dropping-&quot;empty&quot;-dimensions"><span>Dropping &quot;empty&quot; dimensions</span></a></li></ul></li><li><a class="tocitem" href="apiref/">API Reference</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Index</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Index</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/lsterzinger/RAMS.jl/blob/master/src/docs/src/index.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Index"><a class="docs-heading-anchor" href="#Index">Index</a><a id="Index-1"></a><a class="docs-heading-anchor-permalink" href="#Index" title="Permalink"></a></h1><p>Welcome to RAMS.jl</p><h2 id="Installation"><a class="docs-heading-anchor" href="#Installation">Installation</a><a id="Installation-1"></a><a class="docs-heading-anchor-permalink" href="#Installation" title="Permalink"></a></h2><p>As of right now, RAMS.jl is not listed in the Julia repository. Instead, RAMS can be installed via:</p><pre><code class="language-julia">using Pkg
+Pkg.add(url=&quot;git@github.com:lsterzinger/RAMS.jl.git&quot;)</code></pre><h2 id="Source"><a class="docs-heading-anchor" href="#Source">Source</a><a id="Source-1"></a><a class="docs-heading-anchor-permalink" href="#Source" title="Permalink"></a></h2><p>Source code can be found at <a href="https://github.com/lsterzinger/RAMS.jl">https://github.com/lsterzinger/RAMS.jl</a></p><h1 id="Getting-started"><a class="docs-heading-anchor" href="#Getting-started">Getting started</a><a id="Getting-started-1"></a><a class="docs-heading-anchor-permalink" href="#Getting-started" title="Permalink"></a></h1><h2 id="Listing-RAMS-files"><a class="docs-heading-anchor" href="#Listing-RAMS-files">Listing RAMS files</a><a id="Listing-RAMS-files-1"></a><a class="docs-heading-anchor-permalink" href="#Listing-RAMS-files" title="Permalink"></a></h2><p><a href="apiref/#RAMS.list_files-Tuple{String}"><code>list_files(dir)</code></a> lists the files in <code>dir</code>:</p><pre><code class="language-julia">using RAMS
+
+list_files(&quot;./output/control/&quot;)</code></pre><pre><code class="language-none">289-element Array{String,1}:
+ &quot;./output/control/control-A-2017-05-12-030000-g1.h5&quot;
+ &quot;./output/control/control-A-2017-05-12-030500-g1.h5&quot;
+ &quot;./output/control/control-A-2017-05-12-031000-g1.h5&quot;
+ &quot;./output/control/control-A-2017-05-12-031500-g1.h5&quot;
+ &quot;./output/control/control-A-2017-05-12-032000-g1.h5&quot;
+ &quot;./output/control/control-A-2017-05-12-032500-g1.h5&quot;
+ &quot;./output/control/control-A-2017-05-12-033000-g1.h5&quot;
+ &quot;./output/control/control-A-2017-05-12-033500-g1.h5&quot;
+ &quot;./output/control/control-A-2017-05-12-034000-g1.h5&quot;
+ &quot;./output/control/control-A-2017-05-12-034500-g1.h5&quot;
+ ⋮
+ &quot;./output/control/control-A-2017-05-13-021500-g1.h5&quot;
+ &quot;./output/control/control-A-2017-05-13-022000-g1.h5&quot;
+ &quot;./output/control/control-A-2017-05-13-022500-g1.h5&quot;
+ &quot;./output/control/control-A-2017-05-13-023000-g1.h5&quot;
+ &quot;./output/control/control-A-2017-05-13-023500-g1.h5&quot;
+ &quot;./output/control/control-A-2017-05-13-024000-g1.h5&quot;
+ &quot;./output/control/control-A-2017-05-13-024500-g1.h5&quot;
+ &quot;./output/control/control-A-2017-05-13-025000-g1.h5&quot;
+ &quot;./output/control/control-A-2017-05-13-025500-g1.h5&quot;
+ &quot;./output/control/control-A-2017-05-13-030000-g1.h5&quot;
+</code></pre><h2 id="Converting-filenames-to-DateTime-objects"><a class="docs-heading-anchor" href="#Converting-filenames-to-DateTime-objects">Converting filenames to DateTime objects</a><a id="Converting-filenames-to-DateTime-objects-1"></a><a class="docs-heading-anchor-permalink" href="#Converting-filenames-to-DateTime-objects" title="Permalink"></a></h2><p>One of the frustrating things with RAMS output is that there is no <code>time</code> variable in the output. <a href="apiref/#RAMS.RAMSDates-Tuple{Array{String,1}}"><code>RAMSDates(flist)</code></a> allows you to convert the datetimes embedded in the filename into julia DateTime objects:</p><pre><code class="language-julia">using RAMS
+
+flist = list_files(&quot;./output/control/&quot;)
+time = RAMSDates(flist)</code></pre><pre><code class="language-none">289-element Array{Dates.DateTime,1}:
+ 2017-05-12T03:00:00
+ 2017-05-12T03:05:00
+ 2017-05-12T03:10:00
+ 2017-05-12T03:15:00
+ 2017-05-12T03:20:00
+ 2017-05-12T03:25:00
+ 2017-05-12T03:30:00
+ 2017-05-12T03:35:00
+ 2017-05-12T03:40:00
+ 2017-05-12T03:45:00
+ ⋮
+ 2017-05-13T02:15:00
+ 2017-05-13T02:20:00
+ 2017-05-13T02:25:00
+ 2017-05-13T02:30:00
+ 2017-05-13T02:35:00
+ 2017-05-13T02:40:00
+ 2017-05-13T02:45:00
+ 2017-05-13T02:50:00
+ 2017-05-13T02:55:00
+ 2017-05-13T03:00:00</code></pre><h2 id="Reading-in-a-variable"><a class="docs-heading-anchor" href="#Reading-in-a-variable">Reading in a variable</a><a id="Reading-in-a-variable-1"></a><a class="docs-heading-anchor-permalink" href="#Reading-in-a-variable" title="Permalink"></a></h2><p>Reading a variable can be accomplished with <code>RAMSVar(flist, &quot;varname&quot;)</code>. For example:</p><pre><code class="language-julia">using RAMS
+
+flist = list_files(&quot;./output/control/&quot;)
+rcp = RAMSVar(flist, &quot;RCP&quot;)</code></pre><h2 id="Dropping-&quot;empty&quot;-dimensions"><a class="docs-heading-anchor" href="#Dropping-&quot;empty&quot;-dimensions">Dropping &quot;empty&quot; dimensions</a><a id="Dropping-&quot;empty&quot;-dimensions-1"></a><a class="docs-heading-anchor-permalink" href="#Dropping-&quot;empty&quot;-dimensions" title="Permalink"></a></h2><p>In Julia, when using <code>Statistics.mean(dims=x)</code> to compute a mean along a dimension, the dimension in question still exists but has size <code>1</code>. This does not work with plotting packages such as <code>Plots.jl</code>. <code>RAMS.jl</code> includes <a href="apiref/#RAMS.dropmean-Tuple{Any,Any}"><code>dropmean(A, dims)</code></a> to take a mean along a dimension.</p><p>For example:</p><pre><code class="language-julia"># Create a random 5x5x10 array
+x = randn((5,5,10))
+
+using Statistics
+x = mean(x, dims=(1,2))
+size(x)</code></pre><pre class="documenter-example-output">(1, 1, 10)</pre><p>vs </p><pre><code class="language-julia">x = randn((5,5,10))
+
+using RAMS
+x = dropmean(x, (1,2))
+size(x)</code></pre><pre class="documenter-example-output">(10,)</pre></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="apiref/">API Reference »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Wednesday 31 March 2021 23:13">Wednesday 31 March 2021</span>. Using Julia version 1.4.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
