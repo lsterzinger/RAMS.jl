@@ -63,12 +63,13 @@ Function to read a variable from a list of RAMS data files.
 function RAMSVar(flist::Array{String,1}, varname::String; meandims=nothing)
     temp = h5read(flist[1], varname)
     nt = length(flist)
-    dims = vcat(nt, [i for i in size(temp)])
+    basedims = [i for i in size(temp)]
+    dims = vcat(basedims, nt)
     t = typeof(temp[1])
     var = zeros(t, dims...)
 
     @showprogress for (i,f) in enumerate(flist[1:end])
-        selectdim(var,1,i) .= h5read(f, varname)
+        selectdim(var,length(basedims)+1,i) .= h5read(f, varname)
     end
     if meandims === nothing
         return var
