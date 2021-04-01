@@ -20,7 +20,7 @@ Source code can be found at [https://github.com/lsterzinger/RAMS.jl](https://git
 # Getting started
 
 ## Listing RAMS files
-[`list_files(dir)`](@ref) lists the files in `dir`:
+[`list_files(dir)`](@ref) lists the `*.h5` files in `dir`:
 ```julia
 using RAMS
 
