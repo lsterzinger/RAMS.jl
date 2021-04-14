@@ -91,6 +91,11 @@ flist = list_files("./output/control/")
 rcp = RAMSVar(flist, "RCP")
 ```
 
+You can also add together multiple variables by passing a vector of variable names to `RAMSVar()`
+```julia
+lwc = RAMSVar(flist, ["RCP", "RDP", "RRP"])
+``` 
+
 ## Dropping "empty" dimensions
 In Julia, when using `Statistics.mean(dims=x)` to compute a mean along a dimension, the dimension in question still exists but has size `1`. This does not work with plotting packages such as `Plots.jl`. `RAMS.jl` includes [`dropmean(A, dims)`](@ref) to take a mean along a dimension.
 
