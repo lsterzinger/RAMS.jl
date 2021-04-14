@@ -51,11 +51,15 @@ export RAMSDates
 """
     RAMSVar(flist, varname)
 
-Function to read a variable from a list of RAMS data files.
+Function to read a variable from a list of RAMS data files. 
+If `varname` is a string, the specified variable will be returned. 
+If `varname` is `Vector{String}`, the listed variables will be added together
+and returned.
 
 # Arguments
 - `flist::Array{String,1}`: 1D array of string file paths
-- `varname::String`: Name of variable
+- `varname::String`: Name of variable. 
+- Optional: `varname::Vector{String}`: Vector of variable names, the listed variables will be added together
 
 # Returns
 - `var::Array`: Output variable
@@ -77,8 +81,27 @@ function RAMSVar(flist::Array{String,1}, varname::String; meandims=nothing)
         return dropmean(var, meandims)
     end
 end
-export RAMSVar
 
+function RAMSVar(flist::Array{String,1}, varname::Vector{String}; meandims=nothing)
+    temp = h5read(flist[1], varname[1])
+    nt = length(flist)
+    basedims = [i for i in size(temp)]
+    dims = vcat(basedims, nt)
+    t = typeof(temp[1])
+    var = zeros(t, dims...)
+
+    @showprogress for (i,f) in enumerate(flist[1:end])
+        for vname in varname
+            selectdim(var,length(basedims)+1,i) .+= h5read(f, vname)
+        end
+    end
+    if meandims === nothing
+        return var
+    else
+        return dropmean(var, meandims)
+    end
+end
+export RAMSVar
 
 """
     dropmean(var, meandrop)
@@ -105,7 +128,7 @@ omitted from `int_var`)
 function vert_int(var, ztn; notime=false)
     if notime == false
         (nx, ny, nz, nt) = size(var)
-        int_var = zeros(typeof(var[1]), (nt, nx, ny))
+        int_var = zeros(typeof(var[1]), (nx, ny, nt))
 
         @showprogress for t=1:nt
             for x=1:nx, y=1:ny
