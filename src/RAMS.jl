@@ -116,11 +116,9 @@ export dropmean
 
 """
     vert_int(var, ztn; notime=false)
-Vertically integrate `var` along `z` axis with heights specified in `ztn`. 
-Assumes that `var` has dimensions `[x, y, z, t]`
-
-Specify `notime=true` to allow for `var`s with no `t` dimension (will also be 
-omitted from `int_var`)
+Vertically integrate `var` along `z` axis with heights specified in `ztn` 
+using the Trapezoidal rule. Assumes that `var` has dimensions `[x, y, z, t]`, 
+`[x, y, z]`, or `[z, t]`.
 
 # Returns:
 - `int_var::Array`: Integrated array with dimensions `[x,y,t]`
