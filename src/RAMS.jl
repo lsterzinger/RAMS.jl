@@ -125,37 +125,53 @@ omitted from `int_var`)
 # Returns:
 - `int_var::Array`: Integrated array with dimensions `[x,y,t]`
 """
-function vert_int(var, ztn; notime=false)
-    if notime == false
-        (nx, ny, nz, nt) = size(var)
-        int_var = zeros(typeof(var[1]), (nx, ny, nt))
+function vert_int(var::Array{Float32, 4}, ztn)
+    (nx, ny, nz, nt) = size(var)
+    int_var = zeros(typeof(var[1]), (nx, ny, nt))
 
-        @showprogress for t=1:nt
-            for x=1:nx, y=1:ny
-                s = 0.0
-                for z in 2:nz
-                    s += ((var[x,y,z,t] + var[x,y,z-1,t])/2) * (ztn[z] - ztn[z-1])
-                end
-                int_var[x,y,t] = s
-        
-            end
-        end
-        return int_var
-    else
-        (nx, ny, nz) = size(var)
-        int_var = zeros(typeof(var[1]), (nx, ny))
-
+    @showprogress for t=1:nt
         for x=1:nx, y=1:ny
             s = 0.0
             for z in 2:nz
-                s += ((var[x,y,z] + var[x,y,z-1])/2) * (ztn[z] - ztn[z-1])
+                s += ((var[x,y,z,t] + var[x,y,z-1,t])/2) * (ztn[z] - ztn[z-1])
             end
-            int_var[x,y] = s
+            int_var[x,y,t] = s
     
         end
-        return int_var
     end
+    return int_var
 end
+
+function vert_int(var::Array{Float32, 3}, ztn)
+    (nx, ny, nz) = size(var)
+    int_var = zeros(typeof(var[1]), (nx, ny))
+
+    @showprogress for x=1:nx, y=1:ny
+        s = 0.0
+        for z in 2:nz
+            s += ((var[x,y,z] + var[x,y,z-1])/2) * (ztn[z] - ztn[z-1])
+        end
+        int_var[x,y] = s
+
+    end
+    return int_var
+end
+
+function vert_int(var::Array{Float32, 2}, ztn)
+    (nz, nt) = size(var)
+    int_var = zeros(typeof(var[1]), (nt))
+
+    @showprogress for t=1:nt
+        s = 0.0
+        for z in 2:nz
+            s += ((var[z,t] + var[z-1, t])/2) * (ztn[z] - ztn[z-1])
+        end
+        int_var[t] = s
+
+    end
+    return int_var
+end
+
 export vert_int
 
 
