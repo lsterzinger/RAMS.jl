@@ -6,7 +6,7 @@ RAMS Julia Library
 
 using HDF5
 using Dates
-# using ProgressMeter
+using ProgressMeter
 using Statistics
 
 # Get thermo.jl functions
@@ -76,8 +76,7 @@ function RAMSVar(flist::Array{String,1}, varname::String; meandims=nothing)
     t = typeof(temp[1])
     var = zeros(t, dims...)
 
-    # @showprogress 
-    for (i,f) in enumerate(flist[1:end])
+    @showprogress for (i,f) in enumerate(flist[1:end])
     if meandims === nothing
         selectdim(var,length(basedims)+1,i) .= h5read(f, varname)
     else
@@ -87,9 +86,7 @@ function RAMSVar(flist::Array{String,1}, varname::String; meandims=nothing)
 
     end
     return var
-    end
 end
-
 
 # TODO Extend this function too
 function RAMSVar(flist::Array{String,1}, varname::Vector{String}; meandims=nothing)
@@ -100,8 +97,7 @@ function RAMSVar(flist::Array{String,1}, varname::Vector{String}; meandims=nothi
     t = typeof(temp[1])
     var = zeros(t, dims...)
 
-    # @showprogress 
-    for (i,f) in enumerate(flist[1:end])
+    @showprogress for (i,f) in enumerate(flist[1:end])
         for vname in varname
             selectdim(var,length(basedims)+1,i) .+= h5read(f, vname)
         end
@@ -138,8 +134,7 @@ function vert_int(var::Array{Float32, 4}, ztn)
     (nx, ny, nz, nt) = size(var)
     int_var = zeros(typeof(var[1]), (nx, ny, nt))
 
-    # @showprogress 
-    for t=1:nt
+    @showprogress for t=1:nt
         for x=1:nx, y=1:ny
             s = 0.0
             for z in 2:nz
@@ -156,8 +151,7 @@ function vert_int(var::Array{Float32, 3}, ztn)
     (nx, ny, nz) = size(var)
     int_var = zeros(typeof(var[1]), (nx, ny))
 
-    # @showprogress 
-    for x=1:nx, y=1:ny
+    @showprogress for x=1:nx, y=1:ny
         s = 0.0
         for z in 2:nz
             s += ((var[x,y,z] + var[x,y,z-1])/2) * (ztn[z] - ztn[z-1])
@@ -172,8 +166,7 @@ function vert_int(var::Array{Float32, 2}, ztn)
     (nz, nt) = size(var)
     int_var = zeros(typeof(var[1]), (nt))
 
-    # @showprogress 
-    for t=1:nt
+    @showprogress for t=1:nt
         s = 0.0
         for z in 2:nz
             s += ((var[z,t] + var[z-1, t])/2) * (ztn[z] - ztn[z-1])
@@ -205,4 +198,4 @@ function list_files(dir::String)
 end
 export list_files
 
-# end # module
+end # module
