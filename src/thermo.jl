@@ -31,7 +31,7 @@ end
 Saturation mixing ratio based on `THETA` and exner (`PI`).
 """
 function wsat(theta, exner)
-    T = temperature(theta, exner)
+    T = temperature(theta, exner; celsius=true)
     p = pressure(exner)
 
     c0 = 0.6105851e3
