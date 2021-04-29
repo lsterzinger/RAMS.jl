@@ -9,6 +9,10 @@ using Dates
 using ProgressMeter
 using Statistics
 
+# Get thermo.jl functions
+include("thermo.jl")
+export temperature, pressure, wsat, rh, mslp
+
 """
     RAMSDates(flist)
 
@@ -190,4 +194,5 @@ function list_files(dir::String)
     return outlist
 end
 export list_files
+
 end # module
