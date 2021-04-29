@@ -28,7 +28,9 @@ end
 
 """
     wsat(theta, exner)
-Saturation mixing ratio based on `THETA` and exner (`PI`).
+Saturation mixing ratio based on `THETA` and exner (`PI`). 
+
+Note: for this function `THETA` and `PI` must be arrays
 """
 function wsat(theta, exner)
     T = temperature(theta, exner; celsius=true)
@@ -52,7 +54,11 @@ function wsat(theta, exner)
     return ws
 end
 
-
+"""
+    rh(rv, theta, exner)
+Calculates RH in percent (divide by 100 for fraction)
+Note: for this function `THETA` and `PI` must be arrays
+"""
 function rh(rv, theta, exner)
     ws = wsat(theta, exner)
     rh = (rv ./ ws) .* 100.0
@@ -61,6 +67,10 @@ function rh(rv, theta, exner)
 
 end
 
+"""
+    mslp(temp, press, height)
+Calculate Mean Sea Level Pressure from temperature, pressure, and height
+"""
 function mslp(temp, press, height)
     slp = press .* (1 .- (0.0065 .* height)./(temp .+ 0.0065 .* height .+ 273.15)).^-5.257
     return slp
