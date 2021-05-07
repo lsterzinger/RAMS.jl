@@ -71,39 +71,54 @@ and returned.
 function RAMSVar(flist::Array{String,1}, varname::String; meandims=nothing)
     temp = h5read(flist[1], varname)
     nt = length(flist)
-    basedims = [i for i in size(temp)]
+
+    if meandims !== nothing
+        basedims = []
+        for (i,d) in enumerate(size(temp))
+            if !(i in meandims) append!(basedims, d) end
+        end 
+    else
+        basedims = [i for i in size(temp)]
+    end
+    
     dims = vcat(basedims, nt)
     t = typeof(temp[1])
     var = zeros(t, dims...)
 
     @showprogress for (i,f) in enumerate(flist[1:end])
-        selectdim(var,length(basedims)+1,i) .= h5read(f, varname)
+        if meandims !== nothing selectdim(var,length(basedims)+1,i) .+= dropmean(h5read(f, varname), meandims) 
+        else selectdim(var,length(basedims)+1,i) .= h5read(f, varname) end
     end
-    if meandims === nothing
-        return var
-    else
-        return dropmean(var, meandims)
-    end
+    
+    return var
 end
 
+
+# TODO Extend this function too
 function RAMSVar(flist::Array{String,1}, varname::Vector{String}; meandims=nothing)
     temp = h5read(flist[1], varname[1])
     nt = length(flist)
-    basedims = [i for i in size(temp)]
+
+    if meandims !== nothing
+        basedims = []
+        for (i,d) in enumerate(size(temp))
+            if !(i in meandims) append!(basedims, d) end
+        end 
+    else
+        basedims = [i for i in size(temp)]
+    end
+
     dims = vcat(basedims, nt)
     t = typeof(temp[1])
     var = zeros(t, dims...)
 
     @showprogress for (i,f) in enumerate(flist[1:end])
         for vname in varname
-            selectdim(var,length(basedims)+1,i) .+= h5read(f, vname)
+            if meandims !== nothing selectdim(var,length(basedims)+1,i) .+= dropmean(h5read(f, vname), meandims) 
+            else selectdim(var,length(basedims)+1,i) .= h5read(f, vname) end
         end
     end
-    if meandims === nothing
-        return var
-    else
-        return dropmean(var, meandims)
-    end
+    return var
 end
 export RAMSVar
 
