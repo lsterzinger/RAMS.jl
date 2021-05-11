@@ -115,7 +115,7 @@ function RAMSVar(flist::Array{String,1}, varname::Vector{String}; meandims=nothi
     @showprogress for (i,f) in enumerate(flist[1:end])
         for vname in varname
             if meandims !== nothing selectdim(var,length(basedims)+1,i) .+= dropmean(h5read(f, vname), meandims) 
-            else selectdim(var,length(basedims)+1,i) .= h5read(f, vname) end
+            else selectdim(var,length(basedims)+1,i) .+= h5read(f, vname) end
         end
     end
     return var
